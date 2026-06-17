@@ -631,7 +631,7 @@
   <div class="section-label">// Boot-to-Root Engagements</div>
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:3rem;">
     <div class="section-title" style="margin-bottom:0;">Attack Chains</div>
-    <a href="https://github.com/segunakin060/MyPortfolio" target="_blank" style="display:inline-block;font-family:var(--mono);font-size:0.72rem;color:var(--accent);border:1px solid rgba(0,212,160,0.4);padding:0.5rem 1rem;text-decoration:none;" onmouseover="this.style.background='rgba(0,212,160,0.1)'" onmouseout="this.style.background='transparent'">&#x25B6; View on GitHub &rarr;</a>
+    <a href="https://github.com/segunakinsoyinu/MyPortfolio" target="_blank" style="display:inline-block;font-family:var(--mono);font-size:0.72rem;color:var(--accent);border:1px solid rgba(0,212,160,0.4);padding:0.5rem 1rem;text-decoration:none;" onmouseover="this.style.background='rgba(0,212,160,0.1)'" onmouseout="this.style.background='transparent'">&#x25B6; View on GitHub &rarr;</a>
   </div>
 
   <div class="boxes-grid">
@@ -708,6 +708,9 @@
       <div class="box-flags">
         <div class="box-flag user">USER: 5038{Xss_...} &mdash; Captured</div>
         <div class="box-flag root">ROOT: 5038{Unit_Tests_...} &mdash; Captured</div>
+      </div>
+      <div style="margin-top:1rem;">
+        <a href="https://github.com/segunakinsoyinu/CVE-2024-42009-roundcube-xss" target="_blank" style="display:inline-block;font-family:var(--mono);font-size:0.68rem;color:var(--accent2);border:1px solid rgba(255,107,53,0.4);padding:0.45rem 0.9rem;text-decoration:none;" onmouseover="this.style.background='rgba(255,107,53,0.1)'" onmouseout="this.style.background='transparent'">&#x25B6; CVE-2024-42009 PoC &rarr;</a>
       </div>
     </div>
 
@@ -995,6 +998,58 @@
 
   <div class="projects-grid">
 
+    <!-- CVE RESEARCH -->
+    <div class="project-card" style="grid-column: 1 / -1; border: 1px solid #3a1f1f; background: linear-gradient(135deg, rgba(224,92,92,0.06) 0%, var(--surface) 60%);">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),var(--accent2),transparent);"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.4rem;">
+        <div class="project-module" style="color:var(--red);margin-bottom:0;">Security Research &mdash; CVE PoC</div>
+        <div style="font-family:var(--mono);font-size:0.65rem;padding:0.25rem 0.75rem;background:rgba(224,92,92,0.12);border:1px solid rgba(224,92,92,0.3);color:var(--red);">Public PoC Released</div>
+      </div>
+      <div class="project-title">CVE-2024-42009 &mdash; Roundcube Webmail 1.6.6 Stored XSS</div>
+      <div class="project-sub">Zero-click inbox exfiltration via CSS animation event handler &middot; CVSS 8.8 (High)</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:1.5rem;">
+        <div>
+          <div class="project-highlights">
+            <div class="project-point"><span class="icon" style="color:var(--red);">&#x25B6;</span>Roundcube's HTML sanitiser in versions &le; 1.6.6 fails to strip JavaScript event handlers attached to CSS animation keyframes inside a malformed <code style="font-family:var(--mono);font-size:0.75em;color:var(--accent);">&lt;body&gt;</code> tag attribute, allowing arbitrary JavaScript execution with zero user interaction beyond opening the email.</div>
+            <div class="project-point"><span class="icon" style="color:var(--red);">&#x25B6;</span>Payload delivered via unauthenticated SMTP relay on port 25 using Python smtplib. On open, <code style="font-family:var(--mono);font-size:0.75em;color:var(--accent);">onanimationstart</code> fires and <code style="font-family:var(--mono);font-size:0.75em;color:var(--accent);">eval(atob(...))</code> executes a base64-encoded JavaScript inbox exfiltration loop.</div>
+            <div class="project-point"><span class="icon" style="color:var(--red);">&#x25B6;</span>JavaScript iterates inbox UIDs via Roundcube's internal <code style="font-family:var(--mono);font-size:0.75em;color:var(--accent);">/?_task=mail&amp;_action=show</code> API and POSTs all recovered messages as JSON to a CORS-capable attacker listener. 19 emails exfiltrated silently during lab engagement — SSH credentials recovered from UID 1.</div>
+          </div>
+        </div>
+        <div>
+          <div class="project-highlights">
+            <div class="project-point"><span class="icon" style="color:var(--red);">&#x25B6;</span>Confirmed applicable against Roundcube 1.6.6 via searchsploit and manual verification. CVE-2025-49113 (PHP deserialization chain) ruled out — required gadget class absent from target, confirmed by zero-second response on probe.</div>
+            <div class="project-point"><span class="icon" style="color:var(--red);">&#x25B6;</span>Patched in Roundcube 1.6.7 / 1.6.8. Remediation: upgrade + deploy <code style="font-family:var(--mono);font-size:0.75em;color:var(--accent);">Content-Security-Policy: default-src 'self'; script-src 'self'</code> and disable unauthenticated SMTP relay.</div>
+            <div class="project-point"><span class="icon" style="color:var(--red);">&#x25B6;</span>Full PoC released publicly for security research and CTF use. Includes SMTP delivery script, CORS-capable listener, and annotated payload with injection technique explanation. No external dependencies — stdlib only.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.4rem;margin-bottom:1.25rem;">
+        <div class="deliverable-row"><span class="d-icon" style="color:var(--red);">&#x25A0;</span>exploit.py &mdash; SMTP delivery via unauthenticated relay (port 25)</div>
+        <div class="deliverable-row"><span class="d-icon" style="color:var(--red);">&#x25A0;</span>listener.py &mdash; CORS-capable HTTP server; saves stolen_emails.json</div>
+        <div class="deliverable-row"><span class="d-icon" style="color:var(--red);">&#x25A0;</span>payload.html &mdash; Annotated injection string with technique breakdown</div>
+        <div class="deliverable-row"><span class="d-icon" style="color:var(--red);">&#x25A0;</span>README.md &mdash; CVE writeup, CVSS vector, usage guide, remediation</div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:0.4rem;border-top:1px solid var(--border);padding-top:1rem;margin-bottom:1rem;">
+        <span class="project-tag">CVE-2024-42009</span>
+        <span class="project-tag">Stored XSS</span>
+        <span class="project-tag">CSS Animation Injection</span>
+        <span class="project-tag">eval(atob(...))</span>
+        <span class="project-tag">SMTP Delivery</span>
+        <span class="project-tag">Email Exfiltration</span>
+        <span class="project-tag">Roundcube 1.6.6</span>
+        <span class="project-tag">Python PoC</span>
+        <span class="project-tag">CVSS 8.8</span>
+        <span class="project-tag">OWASP A03</span>
+        <span class="project-tag">Zero-Click</span>
+        <span class="project-tag">Zero Dependencies</span>
+      </div>
+
+      <a href="https://github.com/segunakinsoyinu/CVE-2024-42009-roundcube-xss" target="_blank" style="display:inline-block;font-family:var(--mono);font-size:0.72rem;color:var(--red);border:1px solid rgba(224,92,92,0.4);padding:0.5rem 1rem;text-decoration:none;" onmouseover="this.style.background='rgba(224,92,92,0.1)'" onmouseout="this.style.background='transparent'">&#x25B6; View PoC on GitHub &rarr;</a>
+    </div>
+
     <!-- INCIDENT RESPONSE -->
     <div class="project-card ir">
       <div class="project-module">Incident Response &mdash; Coursework 2</div>
@@ -1014,7 +1069,7 @@
       <div class="deliverable-row"><span class="d-icon">&#x25A0;</span>Question 3 &mdash; APT Testing Methodology (328 words)</div>
 
       <div style="margin-top:1rem;margin-bottom:1rem;">
-        <a href="https://github.com/segunakin060/Incident-Response" target="_blank" style="display:inline-block;font-family:var(--mono);font-size:0.72rem;color:var(--red);border:1px solid rgba(224,92,92,0.4);padding:0.5rem 1rem;text-decoration:none;" onmouseover="this.style.background='rgba(224,92,92,0.1)'" onmouseout="this.style.background='transparent'">&#x25B6; View on GitHub &rarr;</a>
+        <a href="https://github.com/segunakinsoyinu/incident-response" target="_blank" style="display:inline-block;font-family:var(--mono);font-size:0.72rem;color:var(--red);border:1px solid rgba(224,92,92,0.4);padding:0.5rem 1rem;text-decoration:none;" onmouseover="this.style.background='rgba(224,92,92,0.1)'" onmouseout="this.style.background='transparent'">&#x25B6; View on GitHub &rarr;</a>
       </div>
       <div class="project-tags" style="margin-top:1rem;">
         <span class="project-tag">Zeek</span>
@@ -1066,7 +1121,7 @@
       <div class="deliverable-row"><span class="d-icon">&#x25A0;</span>Full report with budget table &mdash; 1,471 words</div>
 
       <div style="margin-top:1rem;margin-bottom:1rem;">
-        <a href="https://github.com/segunakin060/network-security-project" target="_blank" style="display:inline-block;font-family:var(--mono);font-size:0.72rem;color:var(--accent3);border:1px solid rgba(91,141,238,0.4);padding:0.5rem 1rem;text-decoration:none;" onmouseover="this.style.background='rgba(91,141,238,0.1)'" onmouseout="this.style.background='transparent'">&#x25B6; View on GitHub &rarr;</a>
+        <a href="https://github.com/segunakinsoyinu/network-security-project" target="_blank" style="display:inline-block;font-family:var(--mono);font-size:0.72rem;color:var(--accent3);border:1px solid rgba(91,141,238,0.4);padding:0.5rem 1rem;text-decoration:none;" onmouseover="this.style.background='rgba(91,141,238,0.1)'" onmouseout="this.style.background='transparent'">&#x25B6; View on GitHub &rarr;</a>
       </div>
       <div class="project-tags" style="margin-top:1rem;">
         <span class="project-tag">IEEE 802.1Q VLANs</span>
@@ -1140,7 +1195,7 @@
         <span class="project-tag">CMI 704 &amp; 705</span>
       </div>
       <div style="margin-top:1rem;">
-        <a href="https://github.com/segunakin060/iot-security-compliance" target="_blank" style="display:inline-block;font-family:var(--mono);font-size:0.72rem;color:#a78bfa;border:1px solid rgba(167,139,250,0.4);padding:0.5rem 1rem;text-decoration:none;" onmouseover="this.style.background='rgba(167,139,250,0.1)'" onmouseout="this.style.background='transparent'">&#x25B6; View on GitHub &rarr;</a>
+        <a href="https://github.com/segunakinsoyinu/iot-security-compliance" target="_blank" style="display:inline-block;font-family:var(--mono);font-size:0.72rem;color:#a78bfa;border:1px solid rgba(167,139,250,0.4);padding:0.5rem 1rem;text-decoration:none;" onmouseover="this.style.background='rgba(167,139,250,0.1)'" onmouseout="this.style.background='transparent'">&#x25B6; View on GitHub &rarr;</a>
       </div>
     </div>
 
@@ -1232,7 +1287,7 @@
         <span class="project-tag">Infrastructure as Code</span>
       </div>
       <div style="margin-top:1rem;">
-        <a href="https://github.com/segunakin060/docker-security-project" target="_blank" style="display:inline-block;font-family:var(--mono);font-size:0.72rem;color:var(--accent);border:1px solid rgba(0,212,160,0.4);padding:0.5rem 1rem;text-decoration:none;" onmouseover="this.style.background='rgba(0,212,160,0.1)'" onmouseout="this.style.background='transparent'">&#x25B6; View on GitHub &rarr;</a>
+        <a href="https://github.com/segunakinsoyinu/docker-security-project" target="_blank" style="display:inline-block;font-family:var(--mono);font-size:0.72rem;color:var(--accent);border:1px solid rgba(0,212,160,0.4);padding:0.5rem 1rem;text-decoration:none;" onmouseover="this.style.background='rgba(0,212,160,0.1)'" onmouseout="this.style.background='transparent'">&#x25B6; View on GitHub &rarr;</a>
       </div>
     </div>
 
